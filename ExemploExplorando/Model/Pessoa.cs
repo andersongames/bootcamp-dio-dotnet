@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace c_sharp_dio_bootcamp_module_2.Models
+namespace ExemploExplorando.Models
 {
     public class Pessoa
     {
