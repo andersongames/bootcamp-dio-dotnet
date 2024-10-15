@@ -30,9 +30,11 @@ namespace ExemploExplorando.Models
         public void ListarAlunos()
         {
             Console.WriteLine($"Alunos  do curso de {Nome}:");
-            foreach (Pessoa aluno in Alunos)
+            for (int i = 0; i < Alunos.Count(); i++)
             {
-                Console.WriteLine(aluno.NomeCompleto);
+                string textConcat = "Nº " + (i + 1) + " - " + Alunos[i].NomeCompleto;
+                string textInterpol = $"Nº {i + 1} - {Alunos[i].NomeCompleto}";
+                Console.WriteLine(textInterpol);
             }
         }
     }
