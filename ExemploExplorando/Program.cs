@@ -153,3 +153,38 @@ else
 
 states.Add("BA", "Bahia");
 Console.WriteLine(states["BA"]);
+
+// TUPLE
+(int Id, string None, string Sobrenome, decimal Altura) tuple1 = (1, "Anderson", "Games", 1.7M);
+ValueTuple<int, string, string, decimal> tuple2 = (1, "Anderson", "Games", 1.7M);
+var tuple3 = Tuple.Create(1, "Anderson", "Games", 1.7M);
+Console.WriteLine($"Id: {tuple1.Id}");
+Console.WriteLine($"Nome: {tuple1.Item2}");
+Console.WriteLine($"Sobrenome: {tuple2.Item3}");
+Console.WriteLine($"Altura: {tuple3.Item4}");
+
+LeituraArquivo file = new LeituraArquivo();
+var (Success, Lines, _) = file.ReadFile("Files/readFile.txt");
+if (Success)
+{
+  // Console.WriteLine($"Quantidade de linhas no arquivo: {Qtd}");
+  foreach (string line in Lines)
+  {
+    Console.WriteLine(line);
+  }
+}
+else
+{
+  Console.WriteLine("Não foi possiveel ler o arquivo.");
+}
+
+// DECONSTRUCT
+Pessoa p3 = new Pessoa("Anderson", "Games");
+(string nome, string sobrenome) = p3;
+Console.WriteLine($"{nome} {sobrenome}");
+
+// TERNARY
+int number = 21;
+
+bool ehPar = number % 2 == 0;
+Console.WriteLine($"O número {number} é " + (ehPar ? "Par" : "Ímpar"));
