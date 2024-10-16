@@ -1,5 +1,6 @@
 ﻿using ExemploExplorando.Models;
 using System.Globalization;
+using Newtonsoft.Json;
 
 CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("pt-BR");
 
@@ -188,3 +189,88 @@ int number = 21;
 
 bool ehPar = number % 2 == 0;
 Console.WriteLine($"O número {number} é " + (ehPar ? "Par" : "Ímpar"));
+
+// SERIALIZE
+DateTime currentDate = DateTime.Now;
+Venda v1 = new Venda(1, "Material de escritório", 25.00M, currentDate);
+Venda v2 = new Venda(2, "Licença de software", 110.00M, currentDate);
+List<Venda> listVendas = new List<Venda>();
+listVendas.Add(v1);
+listVendas.Add(v2); 
+string vendaSerialized = JsonConvert.SerializeObject(v1, Formatting.Indented);
+string listVendasSerialized = JsonConvert.SerializeObject(listVendas, Formatting.Indented);
+Console.WriteLine(listVendasSerialized);
+File.WriteAllText("Files/venda.json", vendaSerialized);
+File.WriteAllText("Files/vendas.json", listVendasSerialized);
+
+// DESERIALIZE
+string fileContent = File.ReadAllText("Files/vendas.json");
+List<Venda> listVendaFile = JsonConvert.DeserializeObject<List<Venda>>(fileContent);
+
+foreach (Venda venda in listVendaFile)
+{
+  Console.WriteLine($"Id: {venda.Id}, Prouto: {venda.Produto}, Preço: {venda.Preco}, Data: {venda.DataVenda.ToString("dd-MM-yyyy HH:mm")}");
+}
+
+// ATRIBUTES - [JsonProperty("Nome_Produto")]
+string fileContent2 = File.ReadAllText("Files/vendas2.json");
+List<Venda> listVendaFile2 = JsonConvert.DeserializeObject<List<Venda>>(fileContent2);
+
+foreach (Venda venda in listVendaFile2)
+{
+  Console.WriteLine(
+    $"Id: {venda.Id}, Prouto: {venda.Produto}, " +
+    $" Preço: {venda.Preco}, Data: {venda.DataVenda.ToString("dd-MM-yyyy HH:mm")}" +
+    $"{(venda.Desconto.HasValue ? $", Desconto: {venda.Desconto}" : "")}"
+  );
+}
+
+// NULLABLE
+bool? recieveEmail = null;
+
+if (recieveEmail.HasValue && recieveEmail.Value)
+{
+  Console.WriteLine("O usuário optou por receber e-mail.");
+}
+else
+{
+  Console.WriteLine("O usuário não respondeu ou optou por não receber e-mail.");
+}
+
+// ANONYMOUS TYPES
+var anonymousType = new { Nome = "Anderson", Sobrenome = "Games", Altura = 1.80 };
+Console.WriteLine("Nome: " + anonymousType.Nome);
+Console.WriteLine("Sobrenome: " + anonymousType.Sobrenome);
+Console.WriteLine("Altura: " + anonymousType.Altura);
+
+var anonymousList = listVendaFile2.Select(x => new { x.Produto, x.Preco });
+
+foreach (var venda in anonymousList)
+{
+  Console.WriteLine($"Produto: {venda.Produto}, Preco: {venda.Preco}");
+}
+
+// DYNAMIC VARIABLES
+dynamic dynamicVariable = 4;
+Console.WriteLine($"Tipo da variável: {dynamicVariable.GetType()}, Valor: {dynamicVariable}");
+
+dynamicVariable = "text";
+Console.WriteLine($"Tipo da variável: {dynamicVariable.GetType()}, Valor: {dynamicVariable}");
+
+dynamicVariable = true;
+Console.WriteLine($"Tipo da variável: {dynamicVariable.GetType()}, Valor: {dynamicVariable}");
+
+// GENERIC CLASS
+MeuArray<int> arrayInt = new MeuArray<int>();
+arrayInt.AddElementArray(30);
+Console.WriteLine(arrayInt[0]);
+
+MeuArray<string> arrayString = new MeuArray<string>();
+arrayString.AddElementArray("test");
+Console.WriteLine(arrayString[0]);
+
+// EXTENSSION METHODS
+int number2 = 20;
+
+bool ehPar2 = number2.ehPar();
+Console.WriteLine($"O número {number2} é " + (ehPar2 ? "Par" : "Ímpar"));
